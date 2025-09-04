@@ -4,6 +4,9 @@
         "enotfound",
         "etimedout",
         "Gotify",
+        "noautoopen",
+        "noverify",
+        "osascript",
         "websocketexception"
     ]
 }

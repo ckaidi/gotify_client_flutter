@@ -136,6 +136,33 @@ print_info "推送到远程仓库..."
 git push origin main
 git push origin "v$new_version"
 
+# 9. 如果在 macOS 上，尝试创建本地 DMG 文件
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    print_info "检测到 macOS 系统，尝试创建本地 DMG 文件..."
+    
+    # 检查是否有 macOS 构建
+    if [ -d "build/macos/Build/Products/Release" ]; then
+        APP_FILES=(build/macos/Build/Products/Release/*.app)
+        if [ ${#APP_FILES[@]} -eq 1 ] && [ -d "${APP_FILES[0]}" ]; then
+            print_info "找到 macOS 应用，创建 DMG 文件..."
+            if [ -f "scripts/create_dmg_simple.sh" ]; then
+                if ./scripts/create_dmg_simple.sh; then
+                    print_success "本地 DMG 文件创建成功"
+                else
+                    print_warning "DMG 创建失败，但不影响发布流程"
+                fi
+            else
+                print_warning "未找到 DMG 创建脚本"
+            fi
+        else
+            print_info "未找到 macOS 应用文件，跳过 DMG 创建"
+            print_info "如需创建 DMG，请先运行: flutter build macos --release"
+        fi
+    else
+        print_info "未找到 macOS 构建目录，跳过 DMG 创建"
+    fi
+fi
+
 print_success "版本 v$new_version 发布成功!"
 print_info "GitHub Actions 将自动开始构建和发布流程"
 print_info "请访问 GitHub Actions 页面查看构建进度:"

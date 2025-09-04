@@ -219,12 +219,27 @@ jobs:
       - name: Build macOS
         run: flutter build macos --release
 
-      - name: Create macOS ZIP
+      - name: Create macOS DMG
+        run: |
+          chmod +x scripts/create_dmg_simple.sh
+          ./scripts/create_dmg_simple.sh
+
+      - name: Create macOS ZIP (fallback)
         run: |
           cd build/macos/Build/Products/Release
           zip -r gotify-client-macos.zip gotify_client_flutter.app
 
-      - name: Upload macOS ZIP to Release
+      - name: Upload macOS DMG to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: gotify_client_flutter-*.dmg
+          asset_name: gotify-client-macos.dmg
+          asset_content_type: application/x-apple-diskimage
+
+      - name: Upload macOS ZIP to Release (fallback)
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
