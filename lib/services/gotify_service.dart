@@ -117,7 +117,7 @@ class GotifyService {
       
       // 监听连接状态
       _channel!.ready.then((_) {
-        timeoutTimer?.cancel(); // 取消超时定时器
+        timeoutTimer.cancel(); // 取消超时定时器
         log('WebSocket连接已建立成功!');
         _updateStatus(ConnectionStatus.connected);
         _resetReconnectAttempts();
@@ -130,18 +130,18 @@ class GotifyService {
             _onMessage(data);
           },
           onError: (error) {
-            timeoutTimer?.cancel();
+            timeoutTimer.cancel();
             log('WebSocket流错误: $error');
             _onError(error);
           },
           onDone: () {
-            timeoutTimer?.cancel();
+            timeoutTimer.cancel();
             log('WebSocket流已关闭');
             _onDisconnected();
           },
         );
       }).catchError((error) {
-        timeoutTimer?.cancel();
+        timeoutTimer.cancel();
         log('WebSocket连接失败: $error');
         log('错误类型: ${error.runtimeType}');
         

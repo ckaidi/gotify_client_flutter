@@ -15,7 +15,7 @@ class ConnectionStatusCard extends StatelessWidget {
           margin: const EdgeInsets.all(16.0),
           child: Card(
             elevation: 8,
-            shadowColor: Colors.black.withOpacity(0.1),
+            shadowColor: Colors.black.withValues(alpha: .1),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
@@ -59,7 +59,7 @@ class ConnectionStatusCard extends StatelessWidget {
                                 shape: BoxShape.circle,
                                 boxShadow: [
                                   BoxShadow(
-                                    color: _getStatusColor(appState.connectionStatus).withOpacity(0.3),
+                                    color: _getStatusColor(appState.connectionStatus).withValues(alpha: .3),
                                     blurRadius: 4,
                                     spreadRadius: 1,
                                   ),
@@ -149,7 +149,7 @@ class ConnectionStatusCard extends StatelessWidget {
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.2),
+            color: color.withValues(alpha: .2),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -247,7 +247,7 @@ class ConnectionStatusCard extends StatelessWidget {
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.2),
+            color: color.withValues(alpha: .2),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),

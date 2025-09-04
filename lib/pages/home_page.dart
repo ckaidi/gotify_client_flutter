@@ -238,11 +238,11 @@ class HomePage extends StatelessWidget {
                     heroTag: "clear",
                     backgroundColor: Colors.transparent,
                     elevation: 0,
+                    tooltip: '清除所有消息',
                     child: const Icon(
                       Icons.clear_all,
                       color: Colors.white,
                     ),
-                    tooltip: '清除所有消息',
                   ),
                 ),
               if (appState.messages.isNotEmpty)
@@ -287,11 +287,11 @@ class HomePage extends StatelessWidget {
                   heroTag: "test",
                   backgroundColor: Colors.transparent,
                   elevation: 0,
+                  tooltip: '测试通知',
                   child: const Icon(
                     Icons.notifications_active,
                     color: Colors.white,
                   ),
-                  tooltip: '测试通知',
                 ),
               ),
             ],

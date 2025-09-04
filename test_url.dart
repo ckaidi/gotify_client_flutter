@@ -1,8 +1,10 @@
 // 这是一个简单的测试脚本来验证URL解析
+import 'package:flutter/widgets.dart';
+
 import 'lib/models/app_config.dart';
 
 void main() {
-  print('开始URL解析测试...');
+  debugPrint('开始URL解析测试...');
   
   // 测试您的服务器地址
   final config = AppConfig(
@@ -10,10 +12,10 @@ void main() {
     clientToken: 'test-token',
   );
   
-  print('原始URL: ${config.serverUrl}');
-  print('清理后URL: ${config.cleanServerUrl}');
-  print('WebSocket URL: ${config.websocketUrl}');
-  print('配置有效性: ${config.isValid}');
+  debugPrint('原始URL: ${config.serverUrl}');
+  debugPrint('清理后URL: ${config.cleanServerUrl}');
+  debugPrint('WebSocket URL: ${config.websocketUrl}');
+  debugPrint('配置有效性: ${config.isValid}');
   
   // 测试其他常见格式
   final testUrls = [
@@ -25,13 +27,13 @@ void main() {
     'https://gotify.example.com:443',
   ];
   
-  print('\n=== 多种URL格式测试 ===');
+  debugPrint('\n=== 多种URL格式测试 ===');
   for (final url in testUrls) {
     final testConfig = AppConfig(serverUrl: url, clientToken: 'test');
-    print('URL: $url');
-    print('  -> 清理后: ${testConfig.cleanServerUrl}');
-    print('  -> WebSocket: ${testConfig.websocketUrl}');
-    print('  -> 有效性: ${testConfig.isValid}');
-    print('');
+    debugPrint('URL: $url');
+    debugPrint('  -> 清理后: ${testConfig.cleanServerUrl}');
+    debugPrint('  -> WebSocket: ${testConfig.websocketUrl}');
+    debugPrint('  -> 有效性: ${testConfig.isValid}');
+    debugPrint('');
   }
 }

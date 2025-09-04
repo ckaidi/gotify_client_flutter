@@ -1,5 +1,9 @@
 {
     "cSpell.words": [
-        "Gotify"
+        "econnrefused",
+        "enotfound",
+        "etimedout",
+        "Gotify",
+        "websocketexception"
     ]
 }

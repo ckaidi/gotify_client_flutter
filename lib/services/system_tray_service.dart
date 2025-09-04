@@ -119,7 +119,6 @@ class SystemTrayService  with TrayListener  {
   /// 退出应用
   Future<void> _quitApp() async {
     await destroySystemTray();
-;
     try {
       await windowManager.destroy();
     } catch (e) {

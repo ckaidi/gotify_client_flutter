@@ -17,7 +17,7 @@ class MessageListItem extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 16.0),
       child: Card(
         elevation: 4,
-        shadowColor: Colors.black.withOpacity(0.08),
+        shadowColor: Colors.black.withValues(alpha: .08),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
@@ -28,7 +28,7 @@ class MessageListItem extends StatelessWidget {
               end: Alignment.bottomRight,
               colors: [
                 Colors.white,
-                Colors.grey.shade50.withOpacity(0.3),
+                Colors.grey.shade50.withValues(alpha: .3),
               ],
             ),
             borderRadius: BorderRadius.circular(16),
@@ -181,13 +181,13 @@ class MessageListItem extends StatelessWidget {
           end: Alignment.bottomRight,
           colors: [
             backgroundColor,
-            backgroundColor.withOpacity(0.7),
+            backgroundColor.withValues(alpha: .7),
           ],
         ),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.2),
+            color: color.withValues(alpha: .2),
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),

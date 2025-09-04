@@ -32,7 +32,7 @@ class _SettingsPageState extends State<SettingsPage> {
     _timeoutController = TextEditingController(text: config.connectionTimeoutSeconds.toString());
     _enableNotifications = config.enableNotifications;
     _autoConnect = config.autoConnect;
-    print('设置页面加载配置: serverUrl=${config.serverUrl}, token=${config.clientToken.isNotEmpty ? "已设置" : "未设置"}');
+    debugPrint('设置页面加载配置: serverUrl=${config.serverUrl}, token=${config.clientToken.isNotEmpty ? "已设置" : "未设置"}');
   }
 
   @override
@@ -292,7 +292,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                     ),
                                   ),
                                   value: _enableNotifications,
-                                  activeColor: Colors.blue.shade600,
+                                  activeThumbColor: Colors.blue.shade600,
                                   onChanged: (value) => setState(() => _enableNotifications = value),
                                 ),
                                 Divider(height: 1, color: Colors.grey.shade200),
@@ -306,7 +306,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                     ),
                                   ),
                                   value: _autoConnect,
-                                  activeColor: Colors.blue.shade600,
+                                  activeThumbColor: Colors.blue.shade600,
                                   onChanged: (value) => setState(() => _autoConnect = value),
                                 ),
                               ],
