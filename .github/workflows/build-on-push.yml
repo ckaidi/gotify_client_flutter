@@ -1,0 +1,121 @@
+name: Build on Push
+
+on:
+  push:
+    branches: [ main, develop, feature/* ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  quick-build:
+    name: Quick Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+          channel: 'stable'
+          cache: true
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Run code generation
+        run: flutter packages pub run build_runner build --delete-conflicting-outputs
+
+      - name: Analyze code
+        run: flutter analyze
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Build Android APK (Debug)
+        run: flutter build apk --debug
+
+      - name: Build Web
+        run: flutter build web --release
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: quick-build-${{ github.sha }}
+          path: |
+            build/app/outputs/flutter-apk/app-debug.apk
+            build/web/
+          retention-days: 7
+
+  build-matrix:
+    name: Build Matrix
+    runs-on: ${{ matrix.os }}
+    if: github.ref == 'refs/heads/main' || github.event_name == 'pull_request'
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            build-target: linux
+            artifact-name: linux-build
+          - os: windows-latest
+            build-target: windows
+            artifact-name: windows-build
+          - os: macos-latest
+            build-target: macos
+            artifact-name: macos-build
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+          channel: 'stable'
+          cache: true
+
+      - name: Install Linux dependencies
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev libstdc++-12-dev
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Run code generation
+        run: flutter packages pub run build_runner build --delete-conflicting-outputs
+
+      - name: Build for ${{ matrix.build-target }}
+        run: flutter build ${{ matrix.build-target }} --release
+
+      - name: Package build (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          cd build/linux/x64/release/bundle
+          tar -czf ../../../../../gotify-client-linux-${{ github.sha }}.tar.gz *
+
+      - name: Package build (Windows)
+        if: matrix.os == 'windows-latest'
+        run: |
+          Compress-Archive -Path build/windows/x64/runner/Release/* -DestinationPath gotify-client-windows-${{ github.sha }}.zip
+
+      - name: Package build (macOS)
+        if: matrix.os == 'macos-latest'
+        run: |
+          cd build/macos/Build/Products/Release
+          zip -r ../../../../../gotify-client-macos-${{ github.sha }}.zip gotify_client_flutter.app
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact-name }}-${{ github.sha }}
+          path: |
+            gotify-client-linux-${{ github.sha }}.tar.gz
+            gotify-client-windows-${{ github.sha }}.zip
+            gotify-client-macos-${{ github.sha }}.zip
+          retention-days: 30
+          if-no-files-found: ignore
